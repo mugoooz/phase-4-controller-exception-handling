@@ -15,22 +15,18 @@ class BirdsController < ApplicationController
 # GET /birds/:id
   def show
     bird = find_bird
-    if bird
     render json: bird
-    else
+  rescue ActiveRecord::RecordNotFound
     render_not_found_response
-    end
   end
 
 # PATCH /birds/:id
   def update
     bird = find_bird
-    if bird
     bird.update(bird_params)
     render json: bird
-    else
+  rescue ActiveRecord::RecordNotFound
     render_not_found_response
-    end
   end
 
   # PATCH /birds/:id/like
@@ -66,7 +62,8 @@ class BirdsController < ApplicationController
   end
 
   def find_bird
-  Bird.find_by(id: params[:id])
+    Bird.find(params[:id])
+  
   end
 
 end
